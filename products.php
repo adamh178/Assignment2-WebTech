@@ -1,11 +1,7 @@
-<!--
-	Guidance:
-	Assignment 1 does not require access to a database!
-	The following code represents your dataset. Students will need to embed this code within their html and/or JavaScript
-	Students should iterate through the array using a JavaScript loop in order to process the required data for their application
-	The following video explains the required process:
-	https://msuclanac-my.sharepoint.com/:v:/g/personal/mbates5_lancashire_ac_uk/IQAAXWMwonKVQY3W0tlloGXDAZvLuGaniOGp7FDSasxsqbs
--->
+<?php
+session_start();
+require_once("connect.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">

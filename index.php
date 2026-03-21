@@ -1,3 +1,8 @@
+<?php
+session_start();
+require_once("connect.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +11,8 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Student Shop - Item</title>
+	<title>Student Union Shop - Home</title>
 </head>
-
 <body>
     <header>
         <!-- Desktop Header -->
@@ -18,6 +22,7 @@
                 <span class="brand-text">Student Shop</span>
             </div>
 
+            <!-- Semantic markup is used to clearly declare that this is for navigation -->
             <nav>
                 <ul class="myNav">
                     <li class="navList"><a href="index.html">Home</a></li>
@@ -47,24 +52,42 @@
         </div>
     </header>
 
+    <main>
+        <div class="main">
 
-    <main class="mainItemPage">
-        <h1 id="itemName">Product Details</h1>
-        <img id="itemImage" src="images/tshirts/tshirt1.jpg" alt="Product image" style="width:200px;">
+            <h1>Where opportunity creates success</h1>
+            <p>
+                Every student at The University of Central Lancashire is automatically a member 
+                of the Students' Union. We're here to make life better for students —
+                inspiring you to succeed and achieve your goals.
+            </p>
 
-        <p id="itemColor"></p>
-        <p id="itemPrice"></p>
-        <p id="itemStock"></p>
-        <p id="itemDescription"></p>
-        
-        <p><button id="addToCartBtn">Add to Cart</button></p>
+            <p>
+                Everything you need to know about UCLan Students' Union. Your membership starts here.
+            </p>
 
-        <a href="products.html" class="itemBackLink">Back to products</a>
+            <h2 class="html5">Together</h2>
+            <!-- HTML5 video - from Week 6 notes -->
+            <!-- https://www.w3schools.com/html/html5_video.asp -->
+            <video width="700" height="400" controls>
+                <source src="video/video.mp4" type="video/mp4">
+                Your browser does not support the HTML5 video element.
+            </video>
 
+            <h2 class="youtubeEmbed">Join our global community</h2>
+            <!-- Youtube iframe video - from week 6 notes -->
+            <iframe
+                width="700"
+                height="400"
+                src="https://www.youtube.com/embed/vzbO3x3OUJQ"
+                title="University Open Day"
+                allowfullscreen>
+            </iframe>
+
+        </div>
     </main>
 
-    <!-- used this as a hidden header -->
-    <h2 hidden>This header should be hidden.</h2>
+
     <footer>
         <div class="footer-container">
 
@@ -88,6 +111,19 @@
         </div>
     </footer>
 
-    <script src="item.js"></script>
+
+
+    <script>
+        // mobile navigation from w3Schools
+        // https://www.w3schools.com/jsref/met_document_getelementbyid.asp
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>
