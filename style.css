@@ -1,0 +1,607 @@
+/* https://www.w3schools.com/css/css3_box-sizing.asp */
+/* basic safety check so padding/width behaves correctly */
+* {
+    box-sizing: border-box;
+}
+
+/* sticky footer setup using this youtube video */
+/* https://www.youtube.com/watch?v=YmI72GTRuqM */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+/* Header */
+header {
+    background-color: #BE1622;      /* Primary Red */
+    padding: 0.5rem 1.5rem;           /* space inside header */
+}
+
+/* Desktop header */
+
+.desktopHeader {
+    display: flex;
+    justify-content: space-between;   /* logo left, nav right */
+    align-items: center;              /* vertically centre everything */
+    /* width: 100%; */
+}
+
+/* Logo and text */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;      /* space between logo and "Student Shop" */
+}
+
+.brand img {
+    max-height: 60px;      /* controls size of the huge logo */
+    width: auto;           /* keep aspect ratio */
+    max-width: 100%;
+}
+
+.brand-text {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* Desktop navigation */
+.myNav {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.navList a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.navList a:hover {
+    text-decoration: underline;
+}
+
+/* Main */
+main {
+    /* flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto; */
+
+    flex: 1 0 auto;     /* same as above comments but more concise*/
+    padding: 2rem 0;    /* space above/below the white box */
+}
+
+.main {
+    background-color: #ffffff;
+    width: 90%;                 /* take most of the width on small screens */
+    max-width: 900px;           /* https://www.w3schools.com/cssref/pr_dim_max-width.php 
+                                   but never get wider than 900px, max width of element*/
+    margin: 0 auto;             /* centre the box horizontally */
+    padding: 2rem;              /* space inside the box */
+    font-size: 1rem;            /* equal to desktop font size */
+}
+
+iframe {
+    border: none;
+}
+
+video, iframe {
+    width: 100%;
+    height: 400px;
+    display: block;
+    margin-bottom: 2rem;
+}
+
+/* footer */
+footer {
+    background-color: #007fb0;
+    padding: 10px;
+    color: white;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    width: 30%;
+    font-size: 13px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.topnav {
+    display: none;
+}
+
+/* Tablet / medium view (Lecture 3 + W3Schools suggest ~768px) */
+@media screen and (max-width: 768px) {
+
+    /* Keep desktop header, just tighten it up */
+    header {
+        padding: 0.5rem 1rem;
+    }
+
+    .brand img {
+        max-height: 50px;
+    }
+
+    .brand-text {
+        font-size: 24px;
+    }
+
+    .myNav {
+        gap: 1rem;
+    }
+
+    .main {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    /* Products: shows 2 products - nicer fit on tablet */
+    .productCard {
+        width: 45%;
+        max-width: 260px;
+    }
+
+    /* Item tablet */
+    #itemImage {
+        max-width: 420px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    #itemName {
+        font-size: 24px;
+    }
+
+    #itemPrice {
+        font-size: 20px;
+    }
+
+    #itemDescription {
+        font-size: 15px;
+    }
+
+    /* Cart tablet */
+    .cartItem {
+        gap: 20px;
+        padding: 16px;
+    }
+
+    .cartItem img {
+        width: 120px;
+    }
+}
+
+
+/* https://www.w3schools.com/cssref/atrule_media.php */
+/* Mobile - hide desktop header and show hamburger menu */
+/* Mobile view */
+@media screen and (max-width: 600px) {
+    .desktopHeader {
+        display: none;
+    }
+
+    .topnav {
+        display: block;          /* show mobile header */
+        position: relative;
+        width: 100%;
+    }
+
+    /* links hidden until the hamburger menu icon is clicked */
+
+    .topnav #myLinks {
+        display: none;
+        overflow: hidden;            /* keeps floats contained */
+    }
+
+    /* make the links sit next to each other */
+    .topnav #myLinks a {
+        float: left;          /* puts links next to each other - https://stackoverflow.com/questions/32835078/css-div-expand-horizontally-instead-of-vertically */
+        display: block;
+        padding: 14px 30px;
+        color: white;
+    }
+
+    /* Style navigation menu links */
+    .topnav a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        font-size: 17px;     /* 17px or 1.05rem */
+        display: block;
+    }
+
+    /* Style the hamburger menu */
+    .topnav a.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 16px 16px;
+    }
+
+    /* https://www.w3schools.com/howto/howto_js_mobile_navbar.asp */
+    /* Add a grey background color on mouse-over */
+    .topnav a:hover {
+        background-color: #c7cbda;
+        color: black;
+    }
+
+    /* Hamburger icon changing colour */
+    .topnav a.icon:hover {
+        background-color: transparent;
+        color: white;
+    }
+
+    .brand img {
+        max-height: 40px;   /* smaller logo on mobile */
+    }
+
+    .brand-text {
+        font-size: 18px;
+    }
+
+    /* Products: 1 product per row on mobile */
+    .productCard {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    /* Item mobile */
+    #itemImage {
+        max-width: 320px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    #itemName {
+        font-size: 20px;
+    }
+
+    #itemPrice {
+        font-size: 18px;
+    }
+
+    #itemDescription {
+        font-size: 14px;
+    }
+
+    #itemStock {
+        font-size: 14px;
+    }
+
+    #addToCartBtn {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    /* Cart mobile */
+    .cartItem {
+        flex-direction: column;   /* stack image + text */
+        text-align: center;
+        gap: 12px;
+    }
+
+    .cartItem img {
+        width: 70%;
+        max-width: 220px;
+    }
+
+    .cartItemName {
+        font-size: 18px;
+    }
+
+    .cartItemPrice {
+        font-size: 16px;
+    }
+
+    /* buttons/links stack nicely on mobile */
+    .contShoppingBtn,
+    .clearCartBtn {
+        width: 100%;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+}
+
+/* PRODUCTS PAGE */
+/* https://www.w3schools.com/howto/howto_css_product_card.asp */
+
+#productList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.productCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 260px;          /* this forces multiple cards per row */
+    text-align: center;
+    font-family: arial;
+    padding: 10px;
+    margin-top: 45px;
+    box-sizing: border-box; /* stops padding breaking width */
+}
+
+.itemImage {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.itemInfo {
+    margin-top: 10px;
+}
+
+.itemName {
+    margin: 0 0 8px 0;
+}
+
+.itemPrice {
+    color: #919cad;
+    font-size: 22px;
+}
+
+.itemStock,
+.itemDescription {
+    margin: 0 0 8px 0;
+}
+
+/* Breadcrumb navigation */
+/* https://www.w3schools.com/howto/howto_css_breadcrumbs.asp */
+
+
+/* Filter setup (adapted from W3Schools filter elements)
+   https://www.w3schools.com/howto/howto_js_filter_elements.asp */
+
+/* hide cards by default when filtering */
+#productList .productCard {
+    display: none;
+}
+
+/* show cards when JS adds this class */
+#productList .productCard.show {
+    display: block;
+}
+
+
+/* show cards when JS adds this class */
+.show {
+    display: block;
+}
+
+/* Style the buttons */
+.btn {
+    border: none;
+    outline: none;
+    padding: 12px 16px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Add a light grey background on mouse-over */
+.btn:hover {
+  background-color: #ddd;
+}
+
+/* Add a dark background to the active button */
+.btn.active {
+  background-color: #666;
+  color: white;
+}
+
+/* Scroll to top button */
+/* https://www.w3schools.com/howto/howto_js_scroll_to_top.asp */
+
+#myBtn {
+    display: none;         /* hidden until user scrolls */
+    position: fixed;       /* sticky on screen */
+    bottom: 200px;          /* distance from bottom */
+    left: 30px;            /* LEFT side like teacher example */
+    z-index: 99;
+
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+
+    border: none;
+    outline: none;
+    background-color: #2f4f6f; /* blue circle */
+    color: white;
+
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#myBtn:hover {
+    background-color: #555;
+}
+
+/* View more button for individual items */
+.viewMoreButton {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border: none;
+    cursor: pointer;
+    background-color: #007fb0;
+    color: white;
+    border-radius: 6px;
+}
+
+.viewMoreButton:hover {
+    background-color: #005f85;
+}
+
+/* ITEM PAGE */
+/* Matches layout and spacing used on products page */
+
+.mainItemPage {
+    text-align: center;
+}
+
+#itemImage {
+    width: 100%;
+    border-radius: 10px;
+}
+
+#itemName {
+    margin-top: 20px;
+}
+
+#itemPrice {
+    color: #919cad;
+    font-size: 22px;
+}
+
+#itemStock {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#itemDescription {
+    margin-top: 15px;
+}
+
+.itemBackLink {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007fb0;
+}
+
+.itemBackLink:hover {
+    text-decoration: underline;
+}
+
+#addToCartBtn {
+    border: none;
+    padding: 12px;
+    color: white;
+    background-color: #007fb0;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 6px;
+}
+
+#addToCartBtn:hover {
+    opacity: 0.7;
+}
+
+/* CART PAGE */
+
+.mainCartPage {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.cartItem {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    padding: 20px;
+    margin-top: 20px;
+
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border-radius: 10px;
+}
+
+.cartItem img {
+    width: 150px;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.cartItemInfo {
+    text-align: left;
+}
+
+.cartItemName {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.cartItemPrice {
+    color: #919cad;
+    font-size: 18px;
+}
+
+/* Continue shopping button */
+.contShoppingBtn {
+    display: inline-block;
+    margin-top: 30px;
+
+    padding: 12px 16px;
+    text-decoration: none;
+
+    background-color: #007fb0; /* Primary Blue */
+    color: white;
+    font-size: 18px;
+
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.contShoppingBtn:hover {
+    background-color: #005f85;
+}
+
+/* Clear cart button */
+.clearCartBtn {
+    display: inline-block;
+    margin-top: 20px;
+
+    padding: 12px 16px;
+    border: none;
+
+    background-color: #577A9B; /* Slate */
+    color: white;
+    font-size: 18px;
+
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.clearCartBtn:hover {
+    background-color: #34516C; /* Darker grey */
+}
