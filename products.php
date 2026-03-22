@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 require_once("connect.php");
 ?>
@@ -25,9 +28,9 @@ require_once("connect.php");
 
             <nav>
                 <ul class="myNav">
-                    <li class="navList"><a href="index.html">Home</a></li>
-                    <li class="navList"><a href="products.html">Products</a></li>
-                    <li class="navList"><a href="cart.html">Cart</a></li>
+                    <li class="navList"><a href="index.php">Home</a></li>
+                    <li class="navList"><a href="products.php">Products</a></li>
+                    <li class="navList"><a href="cart.php">Cart</a></li>
                 </ul>
             </nav>
         </div>
@@ -40,9 +43,9 @@ require_once("connect.php");
             </div>
             <!-- links that show/hide on mobile -->
             <div id="myLinks">
-                <a href="index.html">Home</a>
-                <a href="products.html">Products</a>
-                <a href="cart.html">Cart</a>
+                <a href="index.php">Home</a>
+                <a href="products.php">Products</a>
+                <a href="cart.php">Cart</a>
             </div>
             <!-- "Hamburger menu" to toggle the navigation links -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
@@ -79,28 +82,76 @@ require_once("connect.php");
                 <button class="btn" onclick="filterProducts('inStock')">In Stock</button>
             </div>
 
-            <!-- <li class="productCard in"> -->
-
-
-
             <!-- This is where we will output the list of products -->
             <!-- Product list container -->
             <ul id="productList">
 
-                <!-- TEMPLATE CARD (one only) -->
-                <li id="itemCard" class="productCard">
-                    <img class="itemImage" src="images/tshirts/tshirt1.jpg" alt="T-shirt image">
+            <?php
+
+            $sql = "SELECT * FROM tbl_products";
+            $result = $conn->query($sql);
+
+            if (!$result) {
+                die("Query failed: " . $conn->error);
+            }
+
+            if ($result->num_rows > 0) {
+
+                while ($row = $result->fetch_assoc()) {
+
+                    $id = $row["product_id"];
+                    $title = $row["product_title"];
+                    $price = $row["product_price"];
+                    $stock = $row["product_stock"];
+                    $image = $row["product_src"];
+                    $desc = $row["product_desc"];
+            ?>
+
+                <?php
+                // convert database stock into filter class (my logic)
+                if ($stock == "good-stock" || $stock == "low-stock") {
+                    $stockClass = "inStock";   // anything available
+                } else {
+                    $stockClass = "outStock";  // not available
+                }
+                ?>
+
+                <li class="productCard show <?php echo $stockClass; ?>">
+
+                    <!-- using image path stored in database -->
+                    <img class="itemImage" src="<?php echo $image; ?>" alt="<?php echo $title; ?>">
 
                     <div class="itemInfo">
-                        <h2 class="itemName">T-shirt name (color)</h2>
-                        <!-- <p class="itemColor">Color goes here</p> -->
-                        <p class="itemPrice">Price goes here</p>
-                        <p class="itemStock">Stock status</p>
-                        <p class="itemDescription">Short description goes here</p>
-                        <button class="viewMoreButton" type="button">View More</button>
+
+                        <!-- product title -->
+                        <h2 class="itemName"><?php echo $title; ?></h2>
+
+                        <!-- price -->
+                        <p class="itemPrice">£<?php echo $price; ?></p>
+
+                        <!-- stock status -->
+                        <p class="itemStock"><?php echo $stock; ?></p>
+
+                        <!-- description -->
+                        <p class="itemDescription"><?php echo $desc; ?></p>
+
+                        <!-- view more button -->
+                        <a href="item.php?id=<?php echo $id; ?>">
+                            <button class="viewMoreButton" type="button">View More</button>
+                        </a>
+
                     </div>
+
                 </li>
-                <!-- end template card -->
+
+            <?php
+                }
+            }
+            else {
+                echo "No products found in database";
+            }
+            ?>
+
             </ul>
 
         </div>
@@ -133,6 +184,63 @@ require_once("connect.php");
     
     <!-- external JavaScript file -->
     <!-- https://www.w3schools.com/tags/att_script_src.asp -->
-    <script src="products.js"></script>
+    <!-- <script src="products.js"></script> -->
+
+    <script>
+    // filter products by stock type
+    // products are built by PHP now, JS is only used for filtering on the page
+    function filterProducts(stockType) {
+        var cards = document.getElementsByClassName("productCard");
+
+        // show everything if user clicks show all
+        if (stockType === "all") {
+            stockType = "";
+        }
+
+        for (var i = 0; i < cards.length; i++) {
+            // hide every card first
+            cards[i].classList.remove("show");
+
+            // if the selected class matches, show the card again
+            if (cards[i].className.indexOf(stockType) > -1) {
+                cards[i].classList.add("show");
+            }
+        }
+    }
+
+    // mobile nav toggle
+    // same idea as before, just kept directly on this page
+    function myFunction() {
+        var x = document.getElementById("myLinks");
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+        }
+    }
+
+    // scroll to top button logic
+    var mybutton = document.getElementById("myBtn");
+
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    // show all products when page first loads
+    filterProducts("all");
+    </script>
 </body>
 </html>

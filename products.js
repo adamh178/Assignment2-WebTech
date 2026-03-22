@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 // filter products by stock type
 // adapted from W3Schools filter elements example
 // https://www.w3schools.com/howto/howto_js_filter_elements.asp
@@ -193,3 +194,6 @@ function topFunction() {
     document.body.scrollTop = 0;            // Safari
     document.documentElement.scrollTop = 0; // Chrome, Firefox, Edge
 }
+
+// show everything when page loads (my initial setup)
+filterProducts("all");

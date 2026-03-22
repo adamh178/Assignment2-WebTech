@@ -25,9 +25,9 @@ require_once("connect.php");
 
             <nav>
                 <ul class="myNav">
-                    <li class="navList"><a href="index.html">Home</a></li>
-                    <li class="navList"><a href="products.html">Products</a></li>
-                    <li class="navList"><a href="cart.html">Cart</a></li>
+                    <li class="navList"><a href="index.php">Home</a></li>
+                    <li class="navList"><a href="products.php">Products</a></li>
+                    <li class="navList"><a href="cart.php">Cart</a></li>
                 </ul>
             </nav>
         </div>
@@ -40,9 +40,9 @@ require_once("connect.php");
             </div>
             <!-- links that show/hide on mobile -->
             <div id="myLinks">
-                <a href="index.html">Home</a>
-                <a href="products.html">Products</a>
-                <a href="cart.html">Cart</a>
+                <a href="index.php">Home</a>
+                <a href="products.php">Products</a>
+                <a href="cart.php">Cart</a>
             </div>
             <!-- "Hamburger menu" to toggle the navigation links -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
@@ -64,7 +64,7 @@ require_once("connect.php");
         
         <p><button id="addToCartBtn">Add to Cart</button></p>
 
-        <a href="products.html" class="itemBackLink">Back to products</a>
+        <a href="products.php" class="itemBackLink">Back to products</a>
 
     </main>
 

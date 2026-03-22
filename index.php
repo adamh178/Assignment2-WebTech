@@ -25,9 +25,9 @@ require_once("connect.php");
             <!-- Semantic markup is used to clearly declare that this is for navigation -->
             <nav>
                 <ul class="myNav">
-                    <li class="navList"><a href="index.html">Home</a></li>
-                    <li class="navList"><a href="products.html">Products</a></li>
-                    <li class="navList"><a href="cart.html">Cart</a></li>
+                    <li class="navList"><a href="index.php">Home</a></li>
+                    <li class="navList"><a href="products.php">Products</a></li>
+                    <li class="navList"><a href="cart.php">Cart</a></li>
                 </ul>
             </nav>
         </div>
@@ -40,9 +40,9 @@ require_once("connect.php");
             </div>
             <!-- links that show/hide on mobile -->
             <div id="myLinks">
-                <a href="index.html">Home</a>
-                <a href="products.html">Products</a>
-                <a href="cart.html">Cart</a>
+                <a href="index.php">Home</a>
+                <a href="products.php">Products</a>
+                <a href="cart.php">Cart</a>
             </div>
             <!-- "Hamburger menu" to toggle the navigation links -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
@@ -54,6 +54,47 @@ require_once("connect.php");
 
     <main>
         <div class="main">
+
+            <section class="offersSection">
+                <h2>Current Offers</h2>
+
+                <div id="offerList">
+
+                    <?php
+
+                    // SQL query
+                    $sql = "SELECT * FROM tbl_offers";
+
+                    // run query
+                    $result = $conn->query($sql);
+
+                    // check query
+                    if (!$result) {
+                        die("Query failed: " . $conn->error);
+                    }
+
+                    // loop through offers
+                    if ($result->num_rows > 0) {
+
+                        while ($row = $result->fetch_assoc()) {
+
+                            $title = $row["offer_title"];
+                            $desc = $row["offer_desc"];
+
+                            echo "<div class='offerCard'>";
+                            echo "<h3>$title</h3>";
+                            echo "<p>$desc</p>";
+                            echo "</div>";
+                        }
+
+                    } else {
+                        echo "<p>No offers available</p>";
+                    }
+
+                    ?>
+
+                </div>
+            </section>
 
             <h1>Where opportunity creates success</h1>
             <p>

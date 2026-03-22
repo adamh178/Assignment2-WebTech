@@ -326,6 +326,11 @@ footer a:hover {
         margin-right: auto;
         display: block;
     }
+
+    /*Offer section*/
+    /* .offersSection {
+        display: none;
+    } */
 }
 
 /* PRODUCTS PAGE */
@@ -604,4 +609,25 @@ footer a:hover {
 
 .clearCartBtn:hover {
     background-color: #34516C; /* Darker grey */
+}
+
+/* OFFERS SECTION */
+
+.offersSection {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+#offerList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.offerCard {
+    padding: 15px;
+    border-left: 5px solid #BE1622;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
