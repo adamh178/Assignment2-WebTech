@@ -15,6 +15,7 @@ body {
     flex-direction: column;
     margin: 0;
     font-family: Verdana, Arial, sans-serif;
+    background-color: red;
 }
 
 /* Header */
@@ -84,7 +85,7 @@ main {
 .main {
     background-color: #ffffff;
     width: 90%;                 /* take most of the width on small screens */
-    max-width: 900px;           /* https://www.w3schools.com/cssref/pr_dim_max-width.php 
+    max-width: 1100px;           /* https://www.w3schools.com/cssref/pr_dim_max-width.php 
                                    but never get wider than 900px, max width of element*/
     margin: 0 auto;             /* centre the box horizontally */
     padding: 2rem;              /* space inside the box */
@@ -192,6 +193,10 @@ footer a:hover {
 
     .cartItem img {
         width: 120px;
+    }
+
+    #offerList {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -327,10 +332,9 @@ footer a:hover {
         display: block;
     }
 
-    /*Offer section*/
-    /* .offersSection {
-        display: none;
-    } */
+    #offerList {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* PRODUCTS PAGE */
@@ -615,19 +619,36 @@ footer a:hover {
 
 .offersSection {
     margin-top: 40px;
-    padding: 20px;
-    background-color: #f9f9f9;
+    padding: 30px;
+    background-color: #f5f5f5;
 }
 
 #offerList {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;   /* force ONE row */
 }
 
+/* Each card */
 .offerCard {
+    width: 220px;               /* smaller boxes */
     padding: 15px;
-    border-left: 5px solid #BE1622;
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    background-color: #eeeeee;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    text-align: left;
+}
+
+/* Title */
+.offerCard h3 {
+    font-size: 18px;
+    color: #c9a227;             /* gold/yellow */
+    margin: 0 0 10px 0;
+}
+
+/* Description */
+.offerCard p {
+    font-size: 13px;
+    color: #333;
+    margin: 0;
 }
