@@ -1,6 +1,29 @@
 <?php
 session_start();
 require_once("connect.php");
+
+// check that an id was passed in the URL e.g. item.php?id=3
+if (!isset($_GET['id'])) {
+    die("No product selected");
+}
+
+// get the id from the URL
+$id = $_GET['id'];
+
+// SQL query to find the product that matches the id
+$sql = "SELECT * FROM tbl_products WHERE product_id = $id";
+
+// run the query
+$result = $conn->query($sql);
+
+// if nothing came back, stop the page
+if (!$result || $result->num_rows == 0) {
+    die("Product not found");
+}
+
+// fetch the product as an associative array
+$row = $result->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
@@ -54,13 +77,20 @@ require_once("connect.php");
 
 
     <main class="mainItemPage">
-        <h1 id="itemName">Product Details</h1>
-        <img id="itemImage" src="images/tshirts/tshirt1.jpg" alt="Product image" style="width:200px;">
+        <!-- display product details from the database row -->
 
-        <p id="itemColor"></p>
-        <p id="itemPrice"></p>
-        <p id="itemStock"></p>
-        <p id="itemDescription"></p>
+        <!-- product title -->
+        <h1 id="itemName"><?php echo $row['product_title']; ?></h1>
+
+        <!-- product image using the path stored in the database -->
+        <img id="itemImage"
+            src="<?php echo $row['product_src']; ?>"
+            alt="<?php echo $row['product_title']; ?>">
+
+        <!-- price, stock, and description -->
+        <p id="itemPrice">£<?php echo $row['product_price']; ?></p>
+        <p id="itemStock"><?php echo $row['product_stock']; ?></p>
+        <p id="itemDescription"><?php echo $row['product_desc']; ?></p>
         
         <p><button id="addToCartBtn">Add to Cart</button></p>
 
@@ -93,6 +123,5 @@ require_once("connect.php");
         </div>
     </footer>
 
-    <script src="item.js"></script>
 </body>
 </html>
