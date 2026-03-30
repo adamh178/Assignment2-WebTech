@@ -15,7 +15,6 @@ body {
     flex-direction: column;
     margin: 0;
     font-family: Verdana, Arial, sans-serif;
-    background-color: red;
 }
 
 /* Header */
@@ -85,7 +84,7 @@ main {
 .main {
     background-color: #ffffff;
     width: 90%;                 /* take most of the width on small screens */
-    max-width: 1100px;           /* https://www.w3schools.com/cssref/pr_dim_max-width.php 
+    max-width: 900px;           /* https://www.w3schools.com/cssref/pr_dim_max-width.php 
                                    but never get wider than 900px, max width of element*/
     margin: 0 auto;             /* centre the box horizontally */
     padding: 2rem;              /* space inside the box */
@@ -618,16 +617,16 @@ footer a:hover {
 /* OFFERS SECTION */
 
 .offersSection {
-    margin-top: 40px;
-    padding: 30px;
-    background-color: #f5f5f5;
+    margin-top: 2px;
+    padding: 15px;
+    background-color: white;
 }
 
 #offerList {
     display: flex;
     justify-content: center;
     gap: 25px;
-    flex-wrap: wrap;   /* force ONE row */
+    flex-wrap: wrap;   /* allows cards to move to next row if needed */
 }
 
 /* Each card */
