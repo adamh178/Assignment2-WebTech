@@ -1,0 +1,145 @@
+<?php
+session_start();
+require_once("connect.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $email = htmlspecialchars($_POST["email"]);
+    $password = htmlspecialchars($_POST["password"]);
+
+    $sql = "SELECT * FROM tbl_users WHERE user_email = '$email'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+
+        $row = $result->fetch_assoc();
+
+        // get the hashed password from the database
+        $dbpassword = $row["user_pass"];
+
+        // use password_verify to check the entered password against the hash
+        if (password_verify($password, $dbpassword)) {
+
+            $_SESSION["logged-in"] = true;
+            $_SESSION["user_name"] = $row["user_name"];
+
+            header("Location: index.php");
+            exit();
+
+        } else {
+            $error = "Invalid password";
+        }
+
+    } else {
+        $error = "User does not exist";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Shop - Login</title>
+</head>
+
+<body>
+    <header>
+        <!-- Desktop Header -->
+        <div class="desktopHeader">
+            <div class="brand">
+                <img src="images/logo_reverse.png" alt="University of Central Lancashire logo">
+                <span class="brand-text">Student Shop</span>
+            </div>
+
+            <nav>
+                <ul class="myNav">
+                    <li class="navList"><a href="index.php">Home</a></li>
+                    <li class="navList"><a href="products.php">Products</a></li>
+                    <li class="navList"><a href="cart.php">Cart</a></li>
+                    <li class="navList"><a href="login.php">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Mobile Header -->
+        <div class="topnav">
+            <div class="brand">
+                <img src="images/logo_reverse.png" alt="University of Central Lancashire logo">
+                <span class="brand-text">Student Shop</span>
+            </div>
+            <div id="myLinks">
+                <a href="index.php">Home</a>
+                <a href="products.php">Products</a>
+                <a href="cart.php">Cart</a>
+                <a href="login.php">Login</a>
+            </div>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="main">
+
+            <h1>Login</h1>
+
+            <!-- show error message if login failed -->
+            <?php if (isset($error)) echo "<p>$error</p>"; ?>
+
+            <form method="POST">
+
+                <label>Email:</label>
+                <input type="email" name="email" required>
+
+                <label>Password:</label>
+                <input type="password" name="password" required>
+
+                <button type="submit">Submit</button>
+
+            </form>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+
+            <div class="footer-section">
+                <h3>Links</h3>
+                <p><a href="https://www.uclansu.co.uk">Students' Union</a></p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: suinformation@uclan.ac.uk</p>
+                <p>Phone: 01772 201201</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>University of Lancashire Students' Union</p>
+                <p>Fylde Road, Preston, PR1 7BY</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // mobile nav toggle
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

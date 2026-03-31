@@ -28,6 +28,11 @@ require_once("connect.php");
                     <li class="navList"><a href="index.php">Home</a></li>
                     <li class="navList"><a href="products.php">Products</a></li>
                     <li class="navList"><a href="cart.php">Cart</a></li>
+                    <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                        <li class="navList"><a href="logout.php">Logout</a></li>
+                    <?php } else { ?>
+                        <li class="navList"><a href="login.php">Login</a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
@@ -43,6 +48,11 @@ require_once("connect.php");
                 <a href="index.php">Home</a>
                 <a href="products.php">Products</a>
                 <a href="cart.php">Cart</a>
+                <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                    <a href="logout.php">Logout</a>
+                <?php } else { ?>
+                    <a href="login.php">Login</a>
+                <?php } ?>
             </div>
             <!-- "Hamburger menu" to toggle the navigation links -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
@@ -54,6 +64,11 @@ require_once("connect.php");
 
     <main>
         <div class="main">
+
+            <!-- personalised welcome message - only shows when logged in -->
+            <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                <p>Welcome back, <?php echo $_SESSION["user_name"]; ?>!</p>
+            <?php } ?>
 
             <section class="offersSection">
                 <h2>Current Offers</h2>
