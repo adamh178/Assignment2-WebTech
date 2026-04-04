@@ -24,12 +24,41 @@ if (!$result || $result->num_rows == 0) {
 // fetch the product as an associative array
 $row = $result->fetch_assoc();
 
+// handle review form submission - only runs if user is logged in and form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["logged-in"])) {
+
+    $review_title  = $_POST["review_title"];
+    $review_desc   = $_POST["review_desc"];
+    $review_rating = $_POST["review_rating"];
+    $user_id       = $_SESSION["user_id"];
+
+    // insert the new review into the database
+    $insertSql = "INSERT INTO tbl_reviews (user_id, product_id, review_title, review_desc, review_rating) VALUES ($user_id, $id, '$review_title', '$review_desc', '$review_rating')";
+    $conn->query($insertSql);
+
+    // redirect back to the same page so the new review shows up straight away
+    header("Location: item.php?id=$id");
+    exit();
+}
+
+// get all reviews for this product
+$reviewSql = "SELECT * FROM tbl_reviews WHERE product_id = $id";
+$reviewResult = $conn->query($reviewSql);
+
+// calculate the average rating for this product
+$avgSql = "SELECT AVG(review_rating) AS avg_rating FROM tbl_reviews WHERE product_id = $id";
+$avgResult = $conn->query($avgSql);
+$avgRow = $avgResult->fetch_assoc();
+
+// round to 1 decimal place, or show 0 if no reviews yet
+$avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="main.css"> <!-- link to the stylesheet -->
+	<link rel="stylesheet" type="text/css" href="style1.css"> <!-- link to the stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <meta charset="UTF-8">
@@ -51,6 +80,11 @@ $row = $result->fetch_assoc();
                     <li class="navList"><a href="index.php">Home</a></li>
                     <li class="navList"><a href="products.php">Products</a></li>
                     <li class="navList"><a href="cart.php">Cart</a></li>
+                    <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                        <li class="navList"><a href="logout.php">Logout</a></li>
+                    <?php } else { ?>
+                        <li class="navList"><a href="login.php">Login</a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
@@ -66,6 +100,11 @@ $row = $result->fetch_assoc();
                 <a href="index.php">Home</a>
                 <a href="products.php">Products</a>
                 <a href="cart.php">Cart</a>
+                <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                    <a href="logout.php">Logout</a>
+                <?php } else { ?>
+                    <a href="login.php">Login</a>
+                <?php } ?>
             </div>
             <!-- "Hamburger menu" to toggle the navigation links -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
@@ -89,12 +128,74 @@ $row = $result->fetch_assoc();
 
         <!-- price, stock, and description -->
         <p id="itemPrice">£<?php echo $row['product_price']; ?></p>
-        <p id="itemStock"><?php echo $row['product_stock']; ?></p>
+
+        <!-- convert the database stock value into something readable -->
+        <p id="itemStock">
+            <?php
+            if ($row['product_stock'] == "good-stock") {
+                echo "In stock";
+            } elseif ($row['product_stock'] == "low-stock") {
+                echo "Low stock";
+            } else {
+                echo "Out of stock";
+            }
+            ?>
+        </p>
+
         <p id="itemDescription"><?php echo $row['product_desc']; ?></p>
         
         <p><button id="addToCartBtn">Add to Cart</button></p>
 
         <a href="products.php" class="itemBackLink">Back to products</a>
+
+        <!-- average rating for this product -->
+        <h2>Average Rating: <?php echo $avgRating; ?> / 5</h2>
+
+        <!-- loop through and display all reviews for this product -->
+        <?php if ($reviewResult->num_rows > 0) { ?>
+
+            <?php while ($review = $reviewResult->fetch_assoc()) { ?>
+                <div class="reviewCard">
+                    <h3><?php echo $review["review_title"]; ?></h3>
+                    <p><?php echo $review["review_desc"]; ?></p>
+                    <p><strong>Rating: <?php echo $review["review_rating"]; ?> / 5</strong></p>
+                </div>
+            <?php } ?>
+
+        <?php } else { ?>
+            <p>No reviews yet for this product.</p>
+        <?php } ?>
+
+        <!-- review form - only shown when logged in -->
+        <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+
+            <h2>Leave a Review</h2>
+
+            <form method="POST" class="reviewForm">
+
+                <label>Title:</label>
+                <input type="text" name="review_title" required>
+
+                <label>Comment:</label>
+                <textarea name="review_desc" required></textarea>
+
+                <label>Rating:</label>
+                <select name="review_rating" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+
+                <button type="submit">Submit</button>
+
+            </form>
+
+        <?php } else { ?>
+            <!-- tell guests they need to log in to leave a review -->
+            <p>Please <a href="login.php">log in</a> to leave a review.</p>
+        <?php } ?>
 
     </main>
 

@@ -11,12 +11,19 @@ Description:
 This project is a Student Union Shop web application built using PHP and MySQL.
 It retrieves product and offer data from a database and displays it dynamically.
 
+Dummy Account:
+Email: adam@yahoo.com
+Password: liverpool1!
+
 Features implemented:
 - Homepage with live offers from database
 - Products page with filtering
-- Item view page
+- Item view page with database queries
+- Login and logout functionality
+- Personalised welcome message when logged in
+- Product reviews with average rating
 - Responsive design using CSS
 
 Resources used:
-- W3Schools
+- W3Schools (https://www.w3schools.com)
 - Lecture materials

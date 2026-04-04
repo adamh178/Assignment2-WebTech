@@ -9,7 +9,7 @@ require_once("connect.php");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="main.css"> <!-- link to the stylesheet -->
+	<link rel="stylesheet" type="text/css" href="style1.css"> <!-- link to the stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <meta charset="UTF-8">
@@ -31,6 +31,11 @@ require_once("connect.php");
                     <li class="navList"><a href="index.php">Home</a></li>
                     <li class="navList"><a href="products.php">Products</a></li>
                     <li class="navList"><a href="cart.php">Cart</a></li>
+                    <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                        <li class="navList"><a href="logout.php">Logout</a></li>
+                    <?php } else { ?>
+                        <li class="navList"><a href="login.php">Login</a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
@@ -46,6 +51,11 @@ require_once("connect.php");
                 <a href="index.php">Home</a>
                 <a href="products.php">Products</a>
                 <a href="cart.php">Cart</a>
+                <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                    <a href="logout.php">Logout</a>
+                <?php } else { ?>
+                    <a href="login.php">Login</a>
+                <?php } ?>
             </div>
             <!-- "Hamburger menu" to toggle the navigation links -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
@@ -130,7 +140,18 @@ require_once("connect.php");
                         <p class="itemPrice">£<?php echo $price; ?></p>
 
                         <!-- stock status -->
-                        <p class="itemStock"><?php echo $stock; ?></p>
+                        <!-- convert the database stock value into something readable -->
+                        <p class="itemStock">
+                            <?php
+                            if ($stock == "good-stock") {
+                                echo "In stock";
+                            } elseif ($stock == "low-stock") {
+                                echo "Low stock";
+                            } else {
+                                echo "Out of stock";
+                            }
+                            ?>
+                        </p>
 
                         <!-- description -->
                         <p class="itemDescription"><?php echo $desc; ?></p>

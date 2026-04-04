@@ -6,7 +6,7 @@ require_once("connect.php");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="main.css"> <!-- link to the stylesheet -->
+	<link rel="stylesheet" type="text/css" href="style1.css"> <!-- link to the stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <meta charset="UTF-8">

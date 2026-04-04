@@ -653,3 +653,74 @@ footer a:hover {
     color: #333;
     margin: 0;
 }
+
+/* REVIEWS */
+/* styled the same way as product cards - using the same box shadow technique */
+/* https://www.w3schools.com/howto/howto_css_product_card.asp */
+
+/* each individual review card */
+.reviewCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 15px auto;
+    max-width: 600px;
+    text-align: left;
+}
+
+/* review title */
+.reviewCard h3 {
+    margin: 0 0 10px 0;
+    color: #007fb0;
+    font-size: 18px;
+}
+
+/* review description and rating */
+.reviewCard p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+/* review form - same card style as reviews */
+.reviewForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+    gap: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+/* form labels */
+.reviewForm label {
+    font-size: 14px;
+}
+
+.reviewForm input,
+.reviewForm textarea,
+.reviewForm select {
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.reviewForm textarea {
+    height: 100px;
+}
+
+.reviewForm button {
+    padding: 10px;
+    background-color: #BE1622;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.reviewForm button:hover {
+    background-color: #9a1018;
+}
