@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1>Login</h1>
 
             <!-- show error message if login failed -->
-            <?php if (isset($error)) echo "<p>$error</p>"; ?>
+            <?php if (isset($error)) echo "<p class='formError'>$error</p>"; ?>
 
             <form method="POST">
 
@@ -104,6 +104,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <button type="submit">Submit</button>
 
             </form>
+
+            <!-- link to registration page -->
+            <p>Don't have an account? <a href="register.php">Register here</a></p>
 
         </div>
     </main>

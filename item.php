@@ -199,8 +199,6 @@ $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
 
     </main>
 
-    <!-- used this as a hidden header -->
-    <h2 hidden>This header should be hidden.</h2>
     <footer>
         <div class="footer-container">
 

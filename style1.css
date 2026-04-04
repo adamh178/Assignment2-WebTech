@@ -474,6 +474,21 @@ footer a:hover {
     background-color: #005f85;
 }
 
+/* Add to basket button - red to stand out from view more */
+.addToBasketButton {
+    margin-top: 8px;
+    padding: 10px 14px;
+    border: none;
+    cursor: pointer;
+    background-color: #BE1622;
+    color: white;
+    border-radius: 6px;
+}
+
+.addToBasketButton:hover {
+    background-color: #9a1018;
+}
+
 /* ITEM PAGE */
 /* Matches layout and spacing used on products page */
 
@@ -652,6 +667,58 @@ footer a:hover {
     font-size: 13px;
     color: #333;
     margin: 0;
+}
+
+/* REGISTER / LOGIN FORMS */
+
+/* form inputs stacked with a gap */
+.main form label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.main form input {
+    width: 100%;
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
+.main form button {
+    margin-top: 16px;
+    padding: 10px 20px;
+    background-color: #BE1622;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.main form button:hover {
+    background-color: #9a1018;
+}
+
+/* red inline validation messages - hidden by default, shown by JS */
+.errorMsg {
+    display: none;
+    color: red;
+    font-size: 13px;
+}
+
+/* server-side error message */
+.formError {
+    color: red;
+    font-weight: bold;
+}
+
+/* server-side success message */
+.formSuccess {
+    color: green;
+    font-weight: bold;
 }
 
 /* REVIEWS */

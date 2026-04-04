@@ -161,6 +161,19 @@ require_once("connect.php");
                             <button class="viewMoreButton" type="button">View More</button>
                         </a>
 
+                        <!-- add to basket button -->
+                        <!-- if logged in, go to item page to add to cart -->
+                        <!-- if guest, redirect to login page -->
+                        <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                            <a href="item.php?id=<?php echo $id; ?>">
+                                <button class="addToBasketButton" type="button">Add to Basket</button>
+                            </a>
+                        <?php } else { ?>
+                            <a href="login.php">
+                                <button class="addToBasketButton" type="button">Add to Basket</button>
+                            </a>
+                        <?php } ?>
+
                     </div>
 
                 </li>

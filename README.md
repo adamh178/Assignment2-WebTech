@@ -22,6 +22,7 @@ Features implemented:
 - Login and logout functionality
 - Personalised welcome message when logged in
 - Product reviews with average rating
+- User registration with client and server-side validation
 - Responsive design using CSS
 
 Resources used:
