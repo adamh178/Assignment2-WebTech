@@ -144,7 +144,15 @@ $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
 
         <p id="itemDescription"><?php echo $row['product_desc']; ?></p>
         
-        <p><button id="addToCartBtn">Add to Cart</button></p>
+        <!-- add to cart - only shown when logged in -->
+        <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+            <form method="POST" action="cart.php">
+                <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+                <button type="submit" class="addToBasketButton">Add to Cart</button>
+            </form>
+        <?php } else { ?>
+            <a href="login.php"><button class="addToBasketButton">Add to Cart</button></a>
+        <?php } ?>
 
         <a href="products.php" class="itemBackLink">Back to products</a>
 
@@ -222,5 +230,15 @@ $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
         </div>
     </footer>
 
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>
