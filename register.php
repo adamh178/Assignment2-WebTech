@@ -15,9 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($password !== $confirm) {
         $error = "Passwords do not match.";
 
-    // server-side: check password is at least 6 characters
-    } elseif (strlen($password) < 6) {
-        $error = "Password must be at least 6 characters.";
+    // server-side: check password is at least 8 characters
+    } elseif (strlen($password) < 8) {
+        $error = "Password must be at least 8 characters.";
+
+    // server-side: check password contains at least one number
+    } elseif (!preg_match('/[0-9]/', $password)) {
+        $error = "Password must contain at least one number.";
 
     } else {
 
@@ -129,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label>Password:</label>
                 <input type="password" name="user_pass" id="passwordInput">
                 <!-- client-side validation message for password -->
-                <small class="errorMsg" id="passwordError">Password must have at least 6 characters.</small>
+                <small class="errorMsg" id="passwordError">Password must be at least 8 characters and contain a number.</small>
 
                 <label>Confirm Password:</label>
                 <input type="password" name="user_confirm" id="confirmInput">
@@ -202,8 +206,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             valid = false;
         }
 
-        // check password is at least 6 characters
-        if (password.length < 6) {
+        // check password is at least 8 characters and contains a number
+        if (password.length < 8 || !/[0-9]/.test(password)) {
             document.getElementById("passwordError").style.display = "block";
             valid = false;
         }

@@ -144,8 +144,11 @@ $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
 
         <p id="itemDescription"><?php echo $row['product_desc']; ?></p>
         
-        <!-- add to cart - only shown when logged in -->
-        <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+        <!-- add to cart - only available if item is in stock -->
+        <?php if ($row['product_stock'] == "out-of-stock") { ?>
+            <!-- out of stock items cannot be added to the basket -->
+            <p><em>This item is out of stock.</em></p>
+        <?php } elseif (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
             <form method="POST" action="cart.php">
                 <input type="hidden" name="product_id" value="<?php echo $id; ?>">
                 <button type="submit" class="addToBasketButton">Add to Cart</button>

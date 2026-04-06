@@ -8,45 +8,45 @@ if (!isset($_SESSION["logged-in"]) || $_SESSION["logged-in"] != true) {
     exit();
 }
 
-// if "Add to Basket" was submitted, save the product id in a cookie
+// add to basket - store the product id in a cookie when the form is submitted
 // https://www.w3schools.com/php/php_cookies.asp
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"])) {
     $product_id = $_POST["product_id"];
 
-    // setcookie stores the value in the browser for 1 hour
+    // save the product id in a cookie for 1 hour eg "3"
     setcookie("cart_item", $product_id, time() + 3600, "/");
 
-    // redirect back to cart so the cookie is available straight away
+    // reload the page so the cookie shows up straight away
     header("Location: cart.php");
     exit();
 }
 
-// if checkout button was clicked, insert order into the database
+// checkout - runs when the checkout button is clicked
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["checkout"])) {
     if (isset($_COOKIE["cart_item"])) {
 
-        $user_id     = $_SESSION["user_id"];   // get logged in user id from session
-        $product_ids = $_COOKIE["cart_item"];  // get product id from cookie
+        $user_id     = $_SESSION["user_id"];   // logged in user id from session
+        $product_ids = $_COOKIE["cart_item"];  // product id from the cookie
 
-        // prepared statement to safely insert the order - same technique as register.php
+        // used a prepared statement here - same as register.php
         $stmt = $conn->prepare("INSERT INTO tbl_orders (user_id, product_ids) VALUES (?, ?)");
         $stmt->bind_param("is", $user_id, $product_ids);
         $stmt->execute();
 
-        // check if order was created successfully using insert_id
+        // check the order was added using insert_id - same technique as register.php
         $lastId = $conn->insert_id;
         if ($lastId) {
-            $success = "Thank you for your order! Your order has been placed successfully.";
-            // clear the cookie after checkout so cart is empty
+            // clear the cookie so the cart is empty after checkout
             setcookie("cart_item", "", time() - 3600, "/");
             unset($_COOKIE["cart_item"]);
+            $success = true;
         } else {
             $error = "Something went wrong. Please try again.";
         }
     }
 }
 
-// read the cookie and get the product details from the database
+// read the cookie and get the matching product from the database
 // https://www.w3schools.com/php/php_cookies.asp
 $cartProduct = null;
 if (isset($_COOKIE["cart_item"])) {
@@ -58,7 +58,7 @@ if (isset($_COOKIE["cart_item"])) {
     }
 }
 
-// get current offers from the database to display in the cart
+// get the current offers from tbl_offers to show in the cart
 $offersSql = "SELECT * FROM tbl_offers";
 $offersResult = $conn->query($offersSql);
 ?>
@@ -122,10 +122,12 @@ $offersResult = $conn->query($offersSql);
     <main>
         <div class="main">
 
-            <h1>Your Cart</h1>
+            <h1>Shopping Cart</h1>
 
-            <!-- show success message after checkout -->
-            <?php if (isset($success)) echo "<p class='formSuccess'>$success</p>"; ?>
+            <!-- show success alert after checkout -->
+            <?php if (isset($success) && $success) { ?>
+                <script>alert('Your order has been successfully placed.');</script>
+            <?php } ?>
 
             <!-- show error if checkout failed -->
             <?php if (isset($error)) echo "<p class='formError'>$error</p>"; ?>
@@ -143,19 +145,27 @@ $offersResult = $conn->query($offersSql);
                 </div>
             <?php } ?>
 
-            <!-- show the item stored in the cookie -->
+            <!-- show cart contents -->
             <?php if ($cartProduct) { ?>
 
-                <h2>Item in Your Cart</h2>
+                <!-- personalised message with the users name -->
+                <p>Welcome <?php echo $_SESSION["user_name"]; ?>, the item you have added to your shopping cart is:</p>
 
-                <div class="reviewCard">
-                    <img src="<?php echo $cartProduct["product_src"]; ?>"
-                         alt="<?php echo $cartProduct["product_title"]; ?>"
-                         style="width:150px;">
-                    <h3><?php echo $cartProduct["product_title"]; ?></h3>
-                    <p>Price: <strong>£<?php echo $cartProduct["product_price"]; ?></strong></p>
-                    <p><?php echo $cartProduct["product_desc"]; ?></p>
-                </div>
+                <!-- table layout matching the example -->
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                    <tr>
+                        <td><img src="<?php echo $cartProduct["product_src"]; ?>"
+                                 alt="<?php echo $cartProduct["product_title"]; ?>"
+                                 style="width:80px;"></td>
+                        <td><?php echo $cartProduct["product_title"]; ?></td>
+                        <td>£<?php echo $cartProduct["product_price"]; ?></td>
+                    </tr>
+                </table>
 
                 <!-- checkout form - submits order to tbl_orders -->
                 <form method="POST">
@@ -163,9 +173,10 @@ $offersResult = $conn->query($offersSql);
                     <button type="submit">Checkout</button>
                 </form>
 
-            <?php } elseif (!isset($success)) { ?>
-                <!-- only show empty message if there is no success message showing -->
-                <p>Your cart is empty. <a href="products.php">Browse products</a></p>
+            <?php } else { ?>
+                <!-- empty cart message with link to products -->
+                <p><?php echo $_SESSION["user_name"]; ?> there are no items in your shopping cart.
+                   Please add items from our current <a href="products.php">product list</a>.</p>
             <?php } ?>
 
         </div>

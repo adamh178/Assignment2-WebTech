@@ -1,46 +1,4 @@
-<?php
-session_start();
-require_once("connect.php");
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $email = htmlspecialchars($_POST["email"]);
-    $password = htmlspecialchars($_POST["password"]);
-
-    // used a prepared statement to search for the email - prevents SQL injection
-    $stmt = $conn->prepare("SELECT * FROM tbl_users WHERE user_email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-
-        $row = $result->fetch_assoc();
-
-        // get the hashed password stored in the database
-        $dbpassword = $row["user_pass"];
-
-        // password_verify checks the typed password against the hashed one
-        // learned this from the lecture slides on hashing
-        if (password_verify($password, $dbpassword)) {
-
-            // store user info in session so other pages know who is logged in
-            $_SESSION["logged-in"] = true;
-            $_SESSION["user_name"] = $row["user_name"];
-            $_SESSION["user_id"]   = $row["user_id"];
-
-            header("Location: index.php");
-            exit();
-
-        } else {
-            $error = "Invalid password";
-        }
-
-    } else {
-        $error = "User does not exist";
-    }
-}
-?>
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Student Shop - Login</title>
+    <title>Student Shop - Page Not Found</title>
 </head>
 
 <body>
@@ -67,7 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li class="navList"><a href="index.php">Home</a></li>
                     <li class="navList"><a href="products.php">Products</a></li>
                     <li class="navList"><a href="cart.php">Cart</a></li>
-                    <li class="navList"><a href="login.php">Login</a></li>
+                    <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                        <li class="navList"><a href="logout.php">Logout</a></li>
+                    <?php } else { ?>
+                        <li class="navList"><a href="login.php">Login</a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
@@ -82,7 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a href="index.php">Home</a>
                 <a href="products.php">Products</a>
                 <a href="cart.php">Cart</a>
-                <a href="login.php">Login</a>
+                <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
+                    <a href="logout.php">Logout</a>
+                <?php } else { ?>
+                    <a href="login.php">Login</a>
+                <?php } ?>
             </div>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
@@ -93,25 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <main>
         <div class="main">
 
-            <h1>Login</h1>
-
-            <!-- show error message if login failed -->
-            <?php if (isset($error)) echo "<p class='formError'>$error</p>"; ?>
-
-            <form method="POST">
-
-                <label>Email:</label>
-                <input type="email" name="email" required>
-
-                <label>Password:</label>
-                <input type="password" name="password" required>
-
-                <button type="submit">Submit</button>
-
-            </form>
-
-            <!-- link to registration page -->
-            <p>Don't have an account? <a href="register.php">Register here</a></p>
+            <h1>404 - Page Not Found</h1>
+            <p>Sorry, the page you are looking for does not exist.</p>
+            <p><a href="index.php">Go back to the homepage</a></p>
 
         </div>
     </main>
@@ -140,7 +90,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <script>
-        // mobile nav toggle
         function myFunction() {
             var x = document.getElementById("myLinks");
             if (x.style.display === "block") {

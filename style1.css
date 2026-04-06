@@ -792,3 +792,27 @@ footer a:hover {
 .reviewForm button:hover {
     background-color: #9a1018;
 }
+
+/* CART TABLE */
+/* https://www.w3schools.com/html/html_tables.asp */
+
+.main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+/* table header row */
+.main table th {
+    background-color: #BE1622;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+/* table data cells */
+.main table td {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    vertical-align: middle;
+}
