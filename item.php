@@ -10,21 +10,18 @@ if (!isset($_GET['id'])) {
 // get the id from the URL
 $id = $_GET['id'];
 
-// SQL query to find the product that matches the id
+// find the product that matches the id
 $sql = "SELECT * FROM tbl_products WHERE product_id = $id";
-
-// run the query
 $result = $conn->query($sql);
 
-// if nothing came back, stop the page
+// stop the page if nothing came back
 if (!$result || $result->num_rows == 0) {
     die("Product not found");
 }
 
-// fetch the product as an associative array
 $row = $result->fetch_assoc();
 
-// handle review form submission - only runs if user is logged in and form was submitted
+// handle the review form - only runs if the user is logged in
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["logged-in"])) {
 
     $review_title  = $_POST["review_title"];
@@ -36,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["logged-in"])) {
     $insertSql = "INSERT INTO tbl_reviews (user_id, product_id, review_title, review_desc, review_rating) VALUES ($user_id, $id, '$review_title', '$review_desc', '$review_rating')";
     $conn->query($insertSql);
 
-    // redirect back to the same page so the new review shows up straight away
+    // reload the page so the new review shows straight away
     header("Location: item.php?id=$id");
     exit();
 }
@@ -45,12 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["logged-in"])) {
 $reviewSql = "SELECT * FROM tbl_reviews WHERE product_id = $id";
 $reviewResult = $conn->query($reviewSql);
 
-// calculate the average rating for this product
+// work out the average rating using SQL AVG
 $avgSql = "SELECT AVG(review_rating) AS avg_rating FROM tbl_reviews WHERE product_id = $id";
 $avgResult = $conn->query($avgSql);
 $avgRow = $avgResult->fetch_assoc();
 
-// round to 1 decimal place, or show 0 if no reviews yet
+// round to 1 decimal place, or show 0 if there are no reviews yet
 $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
 
 ?>
@@ -58,7 +55,7 @@ $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="style1.css"> <!-- link to the stylesheet -->
+    <link rel="stylesheet" type="text/css" href="style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <meta charset="UTF-8">
@@ -234,6 +231,7 @@ $avgRating = $avgRow["avg_rating"] ? round($avgRow["avg_rating"], 1) : 0;
     </footer>
 
     <script>
+        // mobile nav toggle
         function myFunction() {
             var x = document.getElementById("myLinks");
             if (x.style.display === "block") {

@@ -13,7 +13,7 @@ if (!isset($_SESSION["logged-in"]) || $_SESSION["logged-in"] != true) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"])) {
     $product_id = $_POST["product_id"];
 
-    // save the product id in a cookie for 1 hour eg "3"
+    // save the product id in a cookie for 1 hour
     setcookie("cart_item", $product_id, time() + 3600, "/");
 
     // reload the page so the cookie shows up straight away
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["checkout"])) {
         $stmt->bind_param("is", $user_id, $product_ids);
         $stmt->execute();
 
-        // check the order was added using insert_id - same technique as register.php
+        // check the order was saved using insert_id
         $lastId = $conn->insert_id;
         if ($lastId) {
             // clear the cookie so the cart is empty after checkout

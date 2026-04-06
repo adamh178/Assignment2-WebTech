@@ -4,28 +4,28 @@ require_once("connect.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // step 1: parse the form data using htmlspecialchars to remove malicious code
+    // grab the form fields and clean them up
     $name     = htmlspecialchars($_POST["user_name"]);
     $email    = htmlspecialchars($_POST["user_email"]);
     $password = htmlspecialchars($_POST["user_pass"]);
     $confirm  = htmlspecialchars($_POST["user_confirm"]);
     $address  = htmlspecialchars($_POST["user_address"]);
 
-    // server-side: check passwords match
+    // check both passwords are the same
     if ($password !== $confirm) {
         $error = "Passwords do not match.";
 
-    // server-side: check password is at least 8 characters
+    // password needs to be at least 8 characters
     } elseif (strlen($password) < 8) {
         $error = "Password must be at least 8 characters.";
 
-    // server-side: check password contains at least one number
+    // also needs a number in it
     } elseif (!preg_match('/[0-9]/', $password)) {
         $error = "Password must contain at least one number.";
 
     } else {
 
-        // server-side: check the email is not already registered
+        // make sure the email isn't already in the database
         $checkSql = "SELECT * FROM tbl_users WHERE user_email = '$email'";
         $checkResult = $conn->query($checkSql);
 
@@ -34,17 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         } else {
 
-            // step 2: hash the password before storing it
+            // hash the password so it's not stored as plain text
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            // step 3: prepare a query to insert the new user into the database
+            // insert the new user into the database using a prepared statement
             $stmt = $conn->prepare("INSERT INTO tbl_users (user_name, user_email, user_pass, user_address) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $name, $email, $hashedPassword, $address);
-
-            // step 4: execute the prepared statement
             $stmt->execute();
 
-            // step 5: check the record has been created and confirm to user
+            // check it worked using insert_id
             $lastId = $conn->insert_id;
             if ($lastId) {
                 $success = "Account created! You can now log in.";
@@ -111,38 +109,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <p>Have an account? <a href="login.php">Log in here</a></p>
 
-            <!-- show server-side error message -->
+            <!-- show error if something went wrong -->
             <?php if (isset($error)) echo "<p class='formError'>$error</p>"; ?>
 
             <!-- show success message if account was created -->
             <?php if (isset($success)) echo "<p class='formSuccess'>$success <a href='login.php'>Log in here</a></p>"; ?>
 
-            <!-- novalidate stops browser default popups so our custom messages show instead -->
+            <!-- novalidate stops the browser popups so my custom messages show instead -->
             <form method="POST" novalidate onsubmit="return validateForm()">
 
                 <label>Name:</label>
                 <input type="text" name="user_name" id="nameInput">
-                <!-- client-side validation message for name -->
-                <small class="errorMsg" id="nameError">Please enter a valid name.</small>
+                <p class="errorMsg" id="nameError">Please enter a valid name.</p>
 
                 <label>Email:</label>
                 <input type="email" name="user_email" id="emailInput">
-                <!-- client-side validation message for email -->
-                <small class="errorMsg" id="emailError">Please enter a valid email address.</small>
+                <p class="errorMsg" id="emailError">Please enter a valid email address.</p>
 
                 <label>Password:</label>
                 <input type="password" name="user_pass" id="passwordInput">
-                <!-- client-side validation message for password -->
-                <small class="errorMsg" id="passwordError">Password must be at least 8 characters and contain a number.</small>
+                <p class="errorMsg" id="passwordError">Password must be at least 8 characters and contain a number.</p>
 
                 <label>Confirm Password:</label>
                 <input type="password" name="user_confirm" id="confirmInput">
-                <!-- client-side validation message for confirm password -->
-                <small class="errorMsg" id="confirmError">Passwords do not match.</small>
+                <p class="errorMsg" id="confirmError">Passwords do not match.</p>
 
                 <label>Address:</label>
                 <input type="text" name="user_address" id="addressInput">
-                <small class="errorMsg" id="addressError">Please enter your address.</small>
+                <p class="errorMsg" id="addressError">Please enter your address.</p>
 
                 <button type="submit">Register</button>
 
@@ -175,56 +169,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <script>
-    // client-side validation - checks all fields before form submits
-    // using novalidate on the form so these messages show instead of browser defaults
+    // check all fields before the form sends
     function validateForm() {
 
         var valid = true;
 
-        var name    = document.getElementById("nameInput").value;
-        var email   = document.getElementById("emailInput").value;
+        var name     = document.getElementById("nameInput").value;
+        var email    = document.getElementById("emailInput").value;
         var password = document.getElementById("passwordInput").value;
-        var confirm = document.getElementById("confirmInput").value;
-        var address = document.getElementById("addressInput").value;
+        var confirm  = document.getElementById("confirmInput").value;
+        var address  = document.getElementById("addressInput").value;
 
-        // hide all error messages first
-        document.getElementById("nameError").style.display    = "none";
-        document.getElementById("emailError").style.display   = "none";
+        // reset all error messages first
+        document.getElementById("nameError").style.display     = "none";
+        document.getElementById("emailError").style.display    = "none";
         document.getElementById("passwordError").style.display = "none";
-        document.getElementById("confirmError").style.display = "none";
-        document.getElementById("addressError").style.display = "none";
+        document.getElementById("confirmError").style.display  = "none";
+        document.getElementById("addressError").style.display  = "none";
 
-        // check name is not empty
+        // name can't be blank
         if (name === "") {
             document.getElementById("nameError").style.display = "block";
             valid = false;
         }
 
-        // check email contains @ sign
+        // basic check that it looks like an email
         if (email === "" || email.indexOf("@") === -1) {
             document.getElementById("emailError").style.display = "block";
             valid = false;
         }
 
-        // check password is at least 8 characters and contains a number
+        // needs 8 characters and at least one number
         if (password.length < 8 || !/[0-9]/.test(password)) {
             document.getElementById("passwordError").style.display = "block";
             valid = false;
         }
 
-        // check passwords match
+        // make sure both passwords match
         if (password !== confirm) {
             document.getElementById("confirmError").style.display = "block";
             valid = false;
         }
 
-        // check address is not empty
+        // address can't be blank
         if (address === "") {
             document.getElementById("addressError").style.display = "block";
             valid = false;
         }
 
-        // if valid is still true, form submits - if false it stops
+        // returns true to submit or false to stop
         return valid;
     }
 

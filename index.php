@@ -6,12 +6,12 @@ require_once("connect.php");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="style1.css"> <!-- link to the stylesheet -->
+    <link rel="stylesheet" type="text/css" href="style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Student Union Shop - Home</title>
+    <title>Student Union Shop - Home</title>
 </head>
 <body>
     <header>
@@ -22,7 +22,7 @@ require_once("connect.php");
                 <span class="brand-text">Student Shop</span>
             </div>
 
-            <!-- Semantic markup is used to clearly declare that this is for navigation -->
+            <!-- nav uses semantic markup so it's clear what it is -->
             <nav>
                 <ul class="myNav">
                     <li class="navList"><a href="index.php">Home</a></li>
@@ -54,7 +54,7 @@ require_once("connect.php");
                     <a href="login.php">Login</a>
                 <?php } ?>
             </div>
-            <!-- "Hamburger menu" to toggle the navigation links -->
+            <!-- hamburger icon to open the mobile nav -->
             <!-- https://www.w3schools.com/howto/howto_js_mobile_navbar.asp -->
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
@@ -77,18 +77,16 @@ require_once("connect.php");
 
                     <?php
 
-                    // SQL query
+                    // get all offers from the database
                     $sql = "SELECT * FROM tbl_offers";
-
-                    // run query
                     $result = $conn->query($sql);
 
-                    // check query
+                    // stop if something went wrong
                     if (!$result) {
                         die("Query failed: " . $conn->error);
                     }
 
-                    // loop through offers
+                    // display each offer as a card
                     if ($result->num_rows > 0) {
 
                         while ($row = $result->fetch_assoc()) {
@@ -113,7 +111,7 @@ require_once("connect.php");
 
             <h1>Where opportunity creates success</h1>
             <p>
-                Every student at The University of Central Lancashire is automatically a member 
+                Every student at The University of Central Lancashire is automatically a member
                 of the Students' Union. We're here to make life better for students —
                 inspiring you to succeed and achieve your goals.
             </p>
@@ -131,7 +129,7 @@ require_once("connect.php");
             </video>
 
             <h2 class="youtubeEmbed">Join our global community</h2>
-            <!-- Youtube iframe video - from week 6 notes -->
+            <!-- YouTube embed - from Week 6 notes -->
             <iframe
                 width="700"
                 height="400"
@@ -142,7 +140,6 @@ require_once("connect.php");
 
         </div>
     </main>
-
 
     <footer>
         <div class="footer-container">
@@ -167,10 +164,8 @@ require_once("connect.php");
         </div>
     </footer>
 
-
-
     <script>
-        // mobile navigation from w3Schools
+        // mobile nav toggle - shows/hides the links when the icon is clicked
         // https://www.w3schools.com/jsref/met_document_getelementbyid.asp
         function myFunction() {
             var x = document.getElementById("myLinks");
