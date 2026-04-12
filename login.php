@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = htmlspecialchars($_POST["email"]);
     $password = htmlspecialchars($_POST["password"]);
 
-    // used a prepared statement to search for the email - prevents SQL injection
+    // used a prepared statement to search for the email, prevents SQL injection
     $stmt = $conn->prepare("SELECT * FROM tbl_users WHERE user_email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();

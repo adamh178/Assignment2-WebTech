@@ -76,7 +76,7 @@ require_once("connect.php");
                 <button class="btn" onclick="filterProducts('inStock')">In Stock</button>
             </div>
 
-            <!-- product list - built by PHP from the database -->
+            <!-- product list, built by PHP from the database -->
             <ul id="productList">
 
             <?php

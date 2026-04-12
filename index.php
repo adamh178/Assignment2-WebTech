@@ -65,7 +65,7 @@ require_once("connect.php");
     <main>
         <div class="main">
 
-            <!-- personalised welcome message - only shows when logged in -->
+            <!-- personalised welcome message, only shows when logged in -->
             <?php if (isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true) { ?>
                 <p>Welcome back, <?php echo $_SESSION["user_name"]; ?>!</p>
             <?php } ?>
@@ -121,7 +121,7 @@ require_once("connect.php");
             </p>
 
             <h2 class="html5">Together</h2>
-            <!-- HTML5 video - from Week 6 notes -->
+            <!-- HTML5 video from Week 6 notes -->
             <!-- https://www.w3schools.com/html/html5_video.asp -->
             <video width="700" height="400" controls>
                 <source src="video/video.mp4" type="video/mp4">
@@ -129,7 +129,7 @@ require_once("connect.php");
             </video>
 
             <h2 class="youtubeEmbed">Join our global community</h2>
-            <!-- YouTube embed - from Week 6 notes -->
+            <!-- YouTube embed from Week 6 notes -->
             <iframe
                 width="700"
                 height="400"

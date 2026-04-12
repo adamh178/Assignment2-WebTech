@@ -8,7 +8,7 @@ if (!isset($_SESSION["logged-in"]) || $_SESSION["logged-in"] != true) {
     exit();
 }
 
-// add to basket - store the product id in a cookie when the form is submitted
+// add to basket, store the product id in a cookie when the form is submitted
 // https://www.w3schools.com/php/php_cookies.asp
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"])) {
     $product_id = $_POST["product_id"];
